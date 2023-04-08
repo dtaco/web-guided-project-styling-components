@@ -2,6 +2,33 @@ import React, { useState, useEffect } from 'react'
 import { BASE_URL, API_KEY } from '../constants'
 import axios from 'axios'
 
+import styled, { keyframes } from 'styled-components';
+
+const kf = keyframes`
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateZ(0);
+  }
+`
+
+const StyledDetails = styled.div`
+  opacity: 0;
+  transform: scale(2) rotateZ(180deg);
+  animation: ${kf} 0.5s ease-in-out forwards;
+
+  background-color: ${props => props.theme.tertiaryColor};
+  p {
+    color: ${props => props.theme.white}
+  }
+  h2 {
+    color: ${props => props.theme.primaryColor}
+  }
+  h3 {
+    color: ${props => props.theme.black}
+  }
+  
+`
+
 export default function Details(props) {
   const { friendId, close } = props
   const [details, setDetails] = useState(null)
@@ -13,14 +40,14 @@ export default function Details(props) {
   }, [friendId])
 
   return (
-    <div className='container'>
+    <StyledDetails className='container'>
       <h2>Details:</h2>
       {
         details &&
         <>
           <p>{details.name} is {details.age}</p>
-          <p>email is {details.email}</p>
-          {name} likes:
+          <p>Email is {details.email}</p>
+          <h3>{details.name} likes:</h3>
           <ul>
             {
               details.hobbies.map((like, idx) => <li key={idx}>{like}</li>)
@@ -29,6 +56,6 @@ export default function Details(props) {
         </>
       }
       <button onClick={close}>Close</button>
-    </div>
+    </StyledDetails>
   )
 }
